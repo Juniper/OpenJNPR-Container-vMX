@@ -1,5 +1,12 @@
 # OpenJNPR-Container-vMX
 
+[![](https://images.microbadger.com/badges/version/juniper/openjnpr-container-vmx:bionic.svg)](https://microbadger.com/images/juniper/openjnpr-container-vmx:bionic "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/juniper/openjnpr-container-vmx:bionic.svg)](https://microbadger.com/images/juniper/openjnpr-container-vmx:bionic "Get your own image badge on microbadger.com")
+
+[![](https://images.microbadger.com/badges/version/juniper/openjnpr-container-vmx:trusty.svg)](https://microbadger.com/images/juniper/openjnpr-container-vmx:trusty "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/juniper/openjnpr-container-vmx:trusty.svg)](https://microbadger.com/images/juniper/openjnpr-container-vmx:trusty "Get your own image badge on microbadger.com")
+
+https://hub.docker.com/r/juniper/openjnpr-container-vmx/
+
+
 Docker container to launch Junos vMX 17.3 and newer versions on baremetal compute nodes. While the Junos control plane (VCP) runs on top of Qemu-kvm, the forwarding plane (VFP/RIOT) runs natively in the container:
 
 ```                                          
