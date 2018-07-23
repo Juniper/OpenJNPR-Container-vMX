@@ -1,8 +1,8 @@
 # OpenJNPR-Container-vMX
 
-[![](https://images.microbadger.com/badges/version/juniper/openjnpr-container-vmx:bionic.svg)](https://microbadger.com/images/juniper/openjnpr-container-vmx:bionic "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/juniper/openjnpr-container-vmx:bionic.svg)](https://microbadger.com/images/juniper/openjnpr-container-vmx:bionic "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/juniper/openjnpr-container-vmx:bionic.svg)](https://microbadger.com/images/juniper/openjnpr-container-vmx:bionic "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/juniper/openjnpr-container-vmx:bionic.svg)](https://microbadger.com/images/juniper/openjnpr-container-vmx:bionic "Get your own image badge on microbadger.com") use with Juniper vMX 18.2 and newer
 
-[![](https://images.microbadger.com/badges/version/juniper/openjnpr-container-vmx:trusty.svg)](https://microbadger.com/images/juniper/openjnpr-container-vmx:trusty "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/juniper/openjnpr-container-vmx:trusty.svg)](https://microbadger.com/images/juniper/openjnpr-container-vmx:trusty "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/juniper/openjnpr-container-vmx:trusty.svg)](https://microbadger.com/images/juniper/openjnpr-container-vmx:trusty "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/juniper/openjnpr-container-vmx:trusty.svg)](https://microbadger.com/images/juniper/openjnpr-container-vmx:trusty "Get your own image badge on microbadger.com") use with Juniper vMX 18.1 and older
 
 https://hub.docker.com/r/juniper/openjnpr-container-vmx/
 
