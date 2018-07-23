@@ -52,7 +52,8 @@ until ip link show eth0; do
 done
 
 rootpassword=$(pwgen 24 1)
-hostname=$(docker ps --format '{{.Names}}' -f id=$HOSTNAME || echo $HOSTNAME)
+hostname=$(docker ps --format '{{.Names}}' -f id=$HOSTNAME)
+hostname="${hostname:-$HOSTNAME}"
 myip=$(ip address show dev eth0|grep 'inet '|awk '{print $2}')
 myipv6=$(ip addr show dev eth0 | awk '/inet6/ {print $2}' | head -1)
 echo "Interface $eth IPv6 address $myipv6"
