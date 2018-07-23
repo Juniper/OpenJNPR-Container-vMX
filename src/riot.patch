@@ -1,0 +1,27 @@
+--- riot/nested_env.sh.orig	2017-06-28 10:43:25.000000000 +0200
++++ riot/nested_env.sh	2017-06-28 10:50:53.000000000 +0200
+@@ -70,7 +70,7 @@
+     # Look for virtual network devices
+     # Build a list of network interfaces available and skip those
+     # we know we don't want to use
+-    local vif_list=$(\ls -1 /sys/class/net/ | grep -v "br\|ext\|^int\|lo\|sit\|tap\|eth0")
++    local vif_list=$(\ls -1 /sys/class/net/ | grep -v "br\|ext\|^int\|lo\|sit\|tap\|ip6\|eth0\|em1\|fxp0"|sort -th -k2 -n)
+     skipped_intf=0
+ 
+     # In case we are using config file to generate pcap intf list.   
+@@ -99,15 +99,6 @@
+     for vif in ${vif_list}
+     do
+         devtype=$(ethtool -i ${vif} | grep driver | cut -d' ' -f2)
+-        # Further filter the list by skipping devices that are not
+-        # controlled by 'vif' or 'veth' driver
+-        if [[ "${devtype}" != "vif" && "${devtype}" != "veth" && "${devtype}" != "hv_netvsc" && "${force_pcap}" != "1" ]]; then
+-            continue
+-        fi
+-        if [ ${skipped_intf} -lt ${num_skip_intf} ]; then
+-            skipped_intf=$(($skipped_intf + 1))
+-            continue
+-        fi
+         # make sure the device is marked as 'UP', mtu set to 9001
+         ip link set dev ${vif} up mtu 9001
+         # turn off ipv6 for this interface on linux
