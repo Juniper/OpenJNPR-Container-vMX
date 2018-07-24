@@ -6,7 +6,7 @@
 SECONDS=0
 logdir=$(dirname $0)
 
-instances=$(docker ps --format '{{.Names}}')
+instances=$(docker ps --format '{{.Names}}'|grep regression)
 count=$(echo "$instances" | wc -w)
 
 if [ "$count" -eq "0" ]; then
