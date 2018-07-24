@@ -10,7 +10,8 @@ if [ -z "$PUBLICKEY" ]; then
 fi
 
 if [ ! -f "/u/$PUBLICKEY" ]; then
-  echo "WARNING: Can't read ssh public key file $PUBLICKEY"
+  >&2 echo "WARNING: Can't read ssh public key file $PUBLICKEY. Creating user 'lab' with same root password"
+  SSHUSER="lab"
 else
   SSHUSER=$(cat /u/$PUBLICKEY | cut -d' ' -f3 | cut -d'@' -f1)
   SSHPUBLIC="ssh-rsa \"$(cat /u/$PUBLICKEY)\""
