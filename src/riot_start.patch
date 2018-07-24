@@ -61,7 +61,7 @@
  trace "$CMDLINE"
 -eval $CMDLINE
 +while true; do
-+  eval $CMDLINE
++  echo $CMDLINE && eval $CMDLINE
 +  echo "restarting riot in 5 seconds ..."
 +  sleep 5
 +done
