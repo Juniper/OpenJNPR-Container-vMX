@@ -19,6 +19,8 @@ for net in $netlist; do
     ifd="fxp0"
   else
     ifd="ge-0/0/$index"
+    ethindex=$(($index + 1))
+    ip addr flush dev eth${ethindex}
   fi
   cat <<EOF
 set interfaces $ifd description "$net"
