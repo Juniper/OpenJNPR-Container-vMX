@@ -64,6 +64,7 @@ brctl addbr br-ext
 ip link set up br-ext
 ip tuntap add dev fxp0 mode tap
 ip link set fxp0 up promisc on
+ip addr flush dev eth0
 macchanger -A eth0
 brctl addif br-ext eth0
 brctl addif br-ext fxp0
