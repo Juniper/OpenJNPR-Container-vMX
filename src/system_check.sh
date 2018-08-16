@@ -35,7 +35,7 @@ freehp=$(grep HugePages_Free /proc/meminfo | awk '{print $2}')
 hpsize=$(grep Hugepagesize /proc/meminfo | awk '{print $2}')
 hpsizemb=$(expr $hpsize / 1024)
 freehpmb=$(expr $freehp \* $hpsizemb)
-if [ $freehpmb -gt 1024 ]; then
+if [ $freehpmb -gt 1023 ]; then
   echo "yes ($freehp x ${hpsizemb} MB = $freehpmb MB)"
 else
   echo "none! Please provision at least 1G (512x2MB or 1x1GB) hugepage"
