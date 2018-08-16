@@ -97,13 +97,13 @@ If left unchanged, the compoe file expects junos-vmx-x86-64-18.2R1.9.qcow2 and j
 Define at least 1024 x 2MB hugepages or 2 x 1GB hugepages via kernel options by adding 
 
 ```
-GRUB_CMDLINE_LINUX_DEFAULT="default_hugepagesz=1G hugepagesz=1G hugepages=2"
+GRUB_CMDLINE_LINUX="default_hugepagesz=1G hugepagesz=1G hugepages=2"
 ```
 
 or
 
 ```
-GRUB_CMDLINE_LINUX_DEFAULT="hugepages=1024"
+GRUB_CMDLINE_LINUX="hugepages=1024"
 ```
 
 to the file /etc/default/grub, followed by running update-grub and reboot:
@@ -163,6 +163,7 @@ juniper/openjnpr-container-vmx                  bionic                          
 ### Launch the containers
 
 Time to launch the images. The vmx1 has a config file in the repo directory: [vmx1.conf](vmx.1conf), which only contains a single apply-group line. The group itself is auto-generated at runtime. vmx2 doesn't have a config file, hence the apply-group statement is auto-generated. This gives the user flexibility to use or not use the auto-generated configuration group.
+IMPORTANT: You must run make as non-root user. Otherwise the public key won't allow automatic access. 
 
 ```
 $ make up
@@ -307,7 +308,7 @@ vMX openjnprcontainervmx_vmx2_1 (172.21.0.3) 18.1R1.9 eihaekahpeetungeekeerohr 	
 
 This takes typically less than 5 minutes.
 
-Ready means the vMX is up and running and the forwarding engine is operational with interfaces attached. 
+Ready means the vMX is up and running and the forwarding engine is operational with interfaces attached. See section 'Troubleshooting' if it doesn't get ready.
 
 ### log into the vMX
 
@@ -453,6 +454,24 @@ $ sudo modprobe loop
 Based on your linux distribution, it is possible to make this change persistent by placing the word 'loop' in the file /etc/modules.
 
 Stop the containers, e.g. with 'docker-compose down' or 'make down' and launch them again.
+
+### check the container log for issues
+
+```
+$ docker logs openjnpr-container-vmx_vmx1_1
+```
+
+Then look for possible errors. A common one is when the provided junos configuration can't be committed. Search for 'Creating initial configuration' and see if there are any errors. 
+
+You can also log into the serial console of the router via
+
+``` 
+$ make ps
+$ docker attach openjnpr-container-vmx_vmx1_1
+```
+
+Hit enter and log in as root, using the password you can copy-paste from the output of 'make ps' command run before. To get out of the console session, hit ^P^Q.
+
 
 ### No hugepages
 
