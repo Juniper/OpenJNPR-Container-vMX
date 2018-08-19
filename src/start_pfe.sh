@@ -40,6 +40,8 @@ echo "patching start_vmxt.sh (to use cpu $vmxtcore) ..."
 rcp 128.0.0.1:/usr/share/pfe/start_vmxt.sh .
 rsh 128.0.0.1 mv /usr/share/pfe/start_vmxt.sh /usr/share/pfe/start_vmxt.sh.orig
 sed -i "s/C 2/C $vmxtcore -L/" start_vmxt.sh
+mkdir /etc/vmxt
+echo "ukern_cpu \"$vmxtcore\"" > /etc/vmxt/init.conf
 rcp start_vmxt.sh 128.0.0.1:/usr/share/pfe/
 
 # patch riot to allow macvlan interfaces too
