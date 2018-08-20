@@ -106,6 +106,11 @@ HDDIMAGE="/tmp/vmxhdd.img"
 echo "Creating empty $HDDIMAGE for VCP ..."
 qemu-img create -f qcow2 $HDDIMAGE 4G >/dev/null
 
+if [ -f /u/$VMXT ]; then
+  echo Copying $VMXT to /etc/vmxt/init.conf
+  cp /u/$VMXT /etc/vmxt/init.conf
+fi
+
 echo "Starting PFE ..."
 sh /start_pfe.sh &
 

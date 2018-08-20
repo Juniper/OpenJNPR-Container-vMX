@@ -15,7 +15,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && dpkg-reconfigure dash \
     && ln -sf /usr/lib/x86_64-linux-gnu/libpcap.so.1.8.1 /usr/lib/x86_64-linux-gnu/libpcap.so.1 \
     && mv /usr/sbin/tcpdump /sbin/ \
-    && mkdir -p /home/pfe/junos /home/pfe/riot /usr/share/pfe /etc/riot \
+    && mkdir -p /home/pfe/junos /home/pfe/riot /usr/share/pfe /etc/riot /etc/vmxt \
     && mkdir -p /var/pfe /var/riot /var/jnx /var/tmp/vmx /var/tmp/gcov \
     && touch /etc/riot/runtime.conf
 

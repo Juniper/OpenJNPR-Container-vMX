@@ -21,12 +21,14 @@ done
 end=$(date +"%s")
 echo "Done [$(($end - $start))s]"
 
-cores=$(cat /proc/self/status |grep Cpus_allowed_list|awk '{print $2}')
-if [ -z "${cores##*,*}" ]; then
-  IFS=', ' read -r -a array <<< "$cores" 
-  vmxtcore=${array[$RANDOM % ${#array[@]} ]}
-else
-  vmxtcore=$(shuf -i $cores -n 1)
+if [ ! -f /etc/vmxt/init.conf ]; then
+  cores=$(cat /proc/self/status |grep Cpus_allowed_list|awk '{print $2}')
+  if [ -z "${cores##*,*}" ]; then
+    IFS=', ' read -r -a array <<< "$cores" 
+    vmxtcore=${array[$RANDOM % ${#array[@]} ]}
+  else
+    vmxtcore=$(shuf -i $cores -n 1)
+  fi
 fi
 
 # create eDB with interface description taken from docker
@@ -36,10 +38,13 @@ if [ -s /tmp/vfp0.cli ]; then
   rsh 128.0.0.1 "cli < /tmp/vfp0.cli"
 fi
 
-echo "patching start_vmxt.sh (to use cpu $vmxtcore for Junos < 18.2) ..."
+echo "patching start_vmxt.sh ..."
 rcp 128.0.0.1:/usr/share/pfe/start_vmxt.sh .
 rsh 128.0.0.1 mv /usr/share/pfe/start_vmxt.sh /usr/share/pfe/start_vmxt.sh.orig
-sed -i "s/C 2/C $vmxtcore -L/" start_vmxt.sh
+if [ ! -f /etc/vmxt/init.conf ]; then
+  echo "use cpu $vmxtcore for Junos"
+  sed -i "s/C 2/C $vmxtcore -L/" start_vmxt.sh
+fi
 #mkdir /etc/vmxt
 #echo "ukern_cpu \"$vmxtcore\"" > /etc/vmxt/init.conf
 rcp start_vmxt.sh 128.0.0.1:/usr/share/pfe/

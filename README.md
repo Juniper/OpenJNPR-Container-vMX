@@ -490,3 +490,23 @@ Hugepagesize:    1048576 kB
 
 The actual amount in MB is Hugepagesize x HugePages_Free / 1024. In the example output that would be 16GB.
 
+### Distribute vmxt process on different cores
+
+Prior to 17.4, the launch script tries to randomize the cpu core assigned to the process vmxt (J-KERN). 
+Starting with 17.4, the process makes use of a configuration file in /etc/vmxt/init.conf to control the cpus used.
+This file can be provided via the env variable VMXT at launch, pointing to a file that will be used if present.
+
+```
+$ cat vmxt.conf
+ukern_cpu="2,4,6"
+```
+
+and referenced via docker-compose (only VMXT shown):
+
+```
+environment:
+   - VMXT=vmxt.conf
+```
+
+This will limit vmxt to use just cores 2,4 and 6.
+

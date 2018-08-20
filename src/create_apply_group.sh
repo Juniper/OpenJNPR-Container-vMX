@@ -17,7 +17,10 @@ else
   SSHPUBLIC="ssh-rsa \"$(cat /u/$PUBLICKEY)\""
 fi
 
+>&2 echo "default route:"
+>&2 ip -4 route list 0/0
 mygw=$(ip -4 route list 0/0 |cut -d' ' -f3)
+>&2 echo "mygw=$mygw"
 if [ ! -z "$mygw" ]; then
    ip4gw="route 0.0.0.0/0 next-hop $mygw"
 fi

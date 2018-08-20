@@ -19,6 +19,7 @@ services:
       - IMAGE=junos-vmx-x86-64-18.2R1.9.qcow2
       - PUBLICKEY=id_rsa.pub
       - CONFIG=vmx1.conf
+      - VMXT=vmxt.conf
     volumes:
       - $PWD:/u:ro
       - /var/run/docker.sock:/var/run/docker.sock
