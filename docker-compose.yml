@@ -20,7 +20,9 @@ services:
       - PUBLICKEY=id_rsa.pub
       - CONFIG=vmx1.conf
       - VMXT=vmxt.conf
+      - HDDIMAGE=/images/p1.qcow2 # if we want it to be persistant
     volumes:
+      - $PWD/images:/images
       - $PWD:/u:ro
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
