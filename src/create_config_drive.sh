@@ -22,6 +22,7 @@ function extract_licenses {
 METADISK=$1
 CONFIG=$2
 LICENSE=$3
+PERSISTENT=$4
 
 echo "METADISK=$METADISK CONFIG=$CONFIG LICENSE=$LICENSE"
 
@@ -34,12 +35,28 @@ mkdir config_drive/var/db/vmm
 mkdir config_drive/var/db/vmm/etc
 mkdir config_drive/config
 mkdir config_drive/config/license
-cat > config_drive/boot/loader.conf <<EOF
+
+if [ "$PERSISTENT" == "persist"  ]; then
+# remove eventual juniper.conf
+ cat >> config_drive/var/db/vmm/etc/rc.vmm <<EOF
+ if [ -f /var/vmguest/config/juniper.conf ]; then
+  echo "persistent setup, removing juniper.conf"
+  rm -f /var/vmguest/config/juniper.conf
+ fi
+ if [ -f /config/juniper.conf ]; then
+  echo "persistent setup, removing juniper.conf"
+  rm -f /config/juniper.conf
+ fi
+EOF
+else
+ cat > config_drive/boot/loader.conf <<EOF
 vmchtype="vmx"
 vm_retype="RE-VMX"
 vm_instance="0"
 EOF
-if [ -f "$LICENSE" ]; then
+fi
+
+if [ -f "$LICENSE" ] && [ "$PERSISTENT" != "persist" ]; then
   echo "extracting licenses from $LICENSE"
   $(extract_licenses $LICENSE)
 fi
@@ -62,8 +79,10 @@ EOF
   fi
 fi
 
-echo "adding config file $CONFIG"
-cp $CONFIG config_drive/config/juniper.conf
+if [ "$PERSISTENT" != "persist"  ]; then
+ echo "adding config file $CONFIG"
+ cp $CONFIG config_drive/config/juniper.conf
+fi
 
 cd config_drive
 tar zcf vmm-config.tgz *
@@ -73,11 +92,10 @@ cd ..
 # Create our own metadrive image, so we can use a junos config file
 # 50MB should be enough.
 dd if=/dev/zero of=metadata.img  bs=1M count=50 >/dev/null 2>&1
-mkfs.vfat metadata.img >/dev/null 
+mkfs.vfat metadata.img >/dev/null
 mount -o loop metadata.img /mnt
 cp config_drive/vmm-config.tgz /mnt
 umount /mnt
 qemu-img convert -O qcow2 metadata.img $METADISK
 rm metadata.img
 ls -l $METADISK
-
