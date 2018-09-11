@@ -98,13 +98,26 @@ ip link set em1 up promisc on
 brctl addif br-int em1
 brctl show
 
+
+
+if [ -n "$HDDIMAGE" ]; then
+  # HDDIMAGE defined
+  if [ -w "$HDDIMAGE" ]; then
+   echo "reusing existing $HDDIMAGE"
+   PERSIST="persist"
+  else
+   echo "Creating $HDDIMAGE for VCP ..."
+   qemu-img create -f qcow2 $HDDIMAGE 4G >/dev/null
+  fi
+else
+ HDDIMAGE="/tmp/vmxhdd.img"
+ echo "Creating empty $HDDIMAGE for VCP ..."
+ qemu-img create -f qcow2 $HDDIMAGE 4G >/dev/null
+fi
+
 CFGDRIVE=/tmp/configdrive.qcow2
 echo "Creating config drive $CFGDRIVE"
-/create_config_drive.sh $CFGDRIVE /tmp/$CONFIG /u/$LICENSE
-
-HDDIMAGE="/tmp/vmxhdd.img"
-echo "Creating empty $HDDIMAGE for VCP ..."
-qemu-img create -f qcow2 $HDDIMAGE 4G >/dev/null
+/create_config_drive.sh $CFGDRIVE /tmp/$CONFIG /u/$LICENSE $PERSIST
 
 if [ -f /u/$VMXT ]; then
   echo Copying $VMXT to /etc/vmxt/init.conf
