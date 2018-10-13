@@ -115,8 +115,9 @@ else
  qemu-img create -f qcow2 $HDDIMAGE 4G >/dev/null
 fi
 
-CFGDRIVE=/tmp/configdrive.qcow2
 echo "Creating config drive $CFGDRIVE"
+CFGDRIVE=/tmp/configdrive.qcow2
+export YANG_SCHEMA YANG_DEVIATION YANG_ACTION YANG_PACKAGE
 /create_config_drive.sh $CFGDRIVE /tmp/$CONFIG /u/$LICENSE $PERSIST
 
 if [ -f /u/$VMXT ]; then
