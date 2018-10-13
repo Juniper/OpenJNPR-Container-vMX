@@ -39,6 +39,7 @@ Docker container to launch Junos vMX 17.3 and newer versions on baremetal comput
 - Auto-configuration of ssh and netconf
 - Assigned IP address to container becomes the IP address of fxp0 
 - Serial console and RIOT messages are available in the container console via [docker attach](https://docs.docker.com/engine/reference/commandline/attach/) and via [docker logs](https://docs.docker.com/engine/reference/commandline/logs/).
+- Load custom YANG schema, deviation and action script at startup
 
 ## Minimum Requirements
 
@@ -142,6 +143,21 @@ To create a fresh keypair, use the following command and accept all defaults:
 ```
 $ ssh-keygen -t rsa
 ```
+
+### Custom YANG support
+
+Place you custom YANG schema, deviation files and action script files in the same location
+as the config nd name them via these environment variables in your docker-comose.yml file:
+
+```
+YANG_SCHEMA="l2vpn.yang"
+YANG_DEVIATION="l2vpn-dev.yang"
+YANG_ACTION="l2vpn.slax"
+YANG_PACKAGE="custom-l2vpn"
+```
+
+These files will be automatically added to the config drive together with an execution 
+script to activate them prior to loading and checking the provided Junos configuration.
 
 ### Build the container
 

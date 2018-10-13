@@ -33,6 +33,7 @@ mkdir config_drive/var
 mkdir config_drive/var/db
 mkdir config_drive/var/db/vmm
 mkdir config_drive/var/db/vmm/etc
+mkdir config_drive/var/db/vmm/yang
 mkdir config_drive/config
 mkdir config_drive/config/license
 
@@ -59,6 +60,37 @@ fi
 if [ -f "$LICENSE" ] && [ "$PERSISTENT" != "persist" ]; then
   echo "extracting licenses from $LICENSE"
   $(extract_licenses $LICENSE)
+fi
+
+# env YANG_SCHEMA YANG_DEVIATION YANG_ACTION YANG_PACKAGE passed to script
+if [ ! -z "$YANG_SCHEMA" ]; then
+  DEST=$PWD/config_drive/var/db/vmm/yang/
+  (cd /u; cp $YANG_SCHEMA $YANG_DEVIATION $YANG_ACTION $DEST)
+  yangargs=""
+  for file in $YANG_SCHEMA; do
+    filebase=$(basename $file)
+    yangargs="$yangargs -m /var/db/vmm/yang/$filebase"
+  done
+  for file in $YANG_DEVIATION; do
+    filebase=$(basename $file)
+    yangargs="$yangargs -d /var/db/vmm/yang/$filebase"
+  done
+  for file in $YANG_ACTION; do
+    filebase=$(basename $file)
+    chmod a+rx $DEST/$filebase
+    yangargs="$yangargs -a /var/db/vmm/yang/$filebase"
+  done
+  YANG_PACKAGE="${YANG_PACKAGE-cyang}"
+  cat > config_drive/var/db/vmm/etc/rc.vmm <<EOF
+echo "------------> YANG import started"
+ls /var/db/vmm/scripts
+echo "/bin/sh /usr/libexec/ui/yang-pkg add -X -i $YANG_PACKAGE $yangargs"
+/bin/sh /usr/libexec/ui/yang-pkg add -X -i $YANG_PACKAGE $yangargs
+echo "------------> YANG import completed"
+EOF
+  chmod a+rx config_drive/var/db/vmm/etc/rc.vmm
+  echo -n "YANG files loaded into config_drive: "
+  ls $DEST
 fi
 
 junospkg=$(ls /u/junos-*-x86-*tgz 2>/dev/null)
