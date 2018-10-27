@@ -34,6 +34,7 @@ ps:
 down:
 	docker-compose down
 	docker-compose -f regression/docker-compose.yml down
+	@rm -f images/p1.qcow2 && echo "removing images/p1.qcow2"
 
 clean:
 	docker system prune -f
