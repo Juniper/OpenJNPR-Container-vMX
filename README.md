@@ -6,8 +6,9 @@
 
 https://hub.docker.com/r/juniper/openjnpr-container-vmx/
 
+Info: vMX 18.4 is out but not yet working with this container.
 
-Docker container to launch Junos vMX 17.3 and newer versions on baremetal compute nodes. While the Junos control plane (VCP) runs on top of Qemu-kvm, the forwarding plane (VFP/RIOT) runs natively in the container:
+Docker container to launch Junos vMX 17.3 and newer versions (up to 18.3) on baremetal compute nodes. While the Junos control plane (VCP) runs on top of Qemu-kvm, the forwarding plane (VFP/RIOT) runs natively in the container:
 
 ```                                          
        +------------------------------+
