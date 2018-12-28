@@ -41,3 +41,14 @@
          # make sure the device is marked as 'UP', mtu set to 9001
          ip link set dev ${vif} up mtu 9001
          # turn off ipv6 for this interface on linux
+--- riot/nested_env.sh.orig    2018-12-01 00:56:07.000000000 +0100
++++ riot/nested_env.sh    2018-12-28 18:07:18.176374452 +0100
+@@ -91,7 +91,7 @@
+
+     # In case we are using config file to generate pcap intf list.
+     # we will prepare vif_list in config order.
+-    force_pcap=0
++    force_pcap=1
+     if [ "x$use_cfg" == "x1" ]; then
+         vif_list=$(get_vif_list)
+         # When interfaces are explicitly specified, do not skip any

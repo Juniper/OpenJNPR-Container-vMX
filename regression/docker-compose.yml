@@ -152,11 +152,34 @@ services:
       - "22"
       - "830"
     environment:
-      - ID=vmx6
+      - ID=vmx7
       - LICENSE=license-eval.txt
       - IMAGE=junos-vmx-x86-64-18.3R1.9.qcow2
       - PUBLICKEY=id_rsa.pub
       - CONFIG=regression/vmx7.conf
+    volumes:
+      - $PWD:/u:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      mgmt:
+      net-a:
+      net-b:
+      net-c:
+
+  vmx8:
+    image: juniper/openjnpr-container-vmx:bionic
+    privileged: true
+    tty: true
+    stdin_open: true
+    ports:
+      - "22"
+      - "830"
+    environment:
+      - ID=vmx8
+      - LICENSE=license-eval.txt
+      - IMAGE=junos-vmx-x86-64-18.4R1.8.qcow2
+      - PUBLICKEY=id_rsa.pub
+      - CONFIG=regression/vmx8.conf
     volumes:
       - $PWD:/u:ro
       - /var/run/docker.sock:/var/run/docker.sock
