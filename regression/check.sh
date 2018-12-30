@@ -19,7 +19,7 @@ while true; do
   success=0
   index=0
   for instance in $instances; do
-    ip=$(docker logs $instance | grep 'root password'|cut -d\( -f2|cut -d\) -f1)
+    ip=$(docker logs $instance | grep 'root password'| awk -F'v4:' '{print $2}' | awk '{print $1}')
     fpcmem=$(ssh -o StrictHostKeyChecking=no -o ConnectTimeout=2 $ip show chassis fpc 0 2>/dev/null | grep Online | awk '{print $9}')
     fpcmem="${fpcmem:-0}"
     descr=$(docker logs $instance | grep 'root password' | cut -d' ' -f1-4 || echo $instance)
