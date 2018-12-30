@@ -1,7 +1,7 @@
 # Copyright (c) 2017, Juniper Networks, Inc.
 # # All rights reserved.
 #
-version: "3"
+version: "2.2"
 
 services:
 
@@ -191,6 +191,10 @@ services:
 
 networks:
   mgmt:
+    enable_ipv6: true
+    ipam:
+      config:
+      - subnet: 2001:db8:1234:1234::/64
   net-a:
   net-b:
   net-c:
