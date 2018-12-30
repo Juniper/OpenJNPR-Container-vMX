@@ -33,10 +33,10 @@ if [ -z "$myip" ]; then
 else
   ip4cfg="family inet { address $myip; }"
 fi
-if [ -z "$myip6" ]; then
+if [ -z "$myipv6" ]; then
   ip6cfg=""
 else
-  ip6cfg="family inet6 { address $myip6mask; }"
+  ip6cfg="family inet6 { address $myipv6; }"
 fi
 
 cat <<EOF
