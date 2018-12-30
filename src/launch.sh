@@ -59,7 +59,7 @@ myipv6=$(ip addr show dev eth0 | awk '/inet6/ {print $2}' | head -1)
 echo "Interface $eth IPv6 address $myipv6"
 # bridge eth0 to fxp0 via br-ext, remove ip and change mac address of eth0
 mymac=$(cat /sys/class/net/eth0/address)
-echo "Bridging $eth ($myipmask/$mymac) with fxp0"
+echo "Bridging eth0 ($myip|$myipv6|$mymac) with fxp0"
 brctl addbr br-ext
 ip link set up br-ext
 ip tuntap add dev fxp0 mode tap
@@ -85,8 +85,9 @@ fi
 /create_apply_group.sh >> /tmp/$CONFIG
 
 ip=$(echo "$myip" | cut -d/ -f1)
+ip6=$(echo "$myipv6" | cut -d/ -f1)
 echo "-----------------------------------------------------------------------"
-echo "vMX $hostname ($ip) $RELEASE root password $rootpassword"
+echo "vMX $hostname (v4:$ip v6:$ip6) $RELEASE root password $rootpassword"
 echo "-----------------------------------------------------------------------"
 echo ""
 
