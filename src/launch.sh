@@ -30,7 +30,7 @@ fi
 if [[ "$IMAGE" =~ \.qcow2$ ]]; then
   echo "using qcow2 image $IMAGE"
   cp /u/$IMAGE /tmp/
-  VCPIMAGE=$IMAGE
+  VCPIMAGE=$(basename $IMAGE)
 else
   echo "$IMAGE isn't a qcow2 image"
   exit 1
