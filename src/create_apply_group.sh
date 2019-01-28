@@ -26,7 +26,7 @@ fi
 mygw=$(ip -4 route list 0/0 |cut -d' ' -f3)
 >&2 echo "mygw=$mygw"
 if [ ! -z "$mygw" ]; then
-   ip4gw="route 0.0.0.0/0 next-hop $mygw"
+   ip4gw="routing-options { static { route 0.0.0.0/0 next-hop $mygw; }}"
 fi
 if [ -z "$myip" ]; then
   ip4cfg=""
@@ -84,11 +84,7 @@ groups {
         }
       }
     }
-    routing-options {
-      static {
-        $ip4gw;
-      }
-    }
+    $ip4gw;
   }
 }
 EOF
