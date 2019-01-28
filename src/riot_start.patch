@@ -42,6 +42,15 @@
      esac
  
      arg_str=${arg_str}`/home/pfe/riot/get_virtio_argstr $numcpus $numports $lo_num $fab_enable $pfe_id $vmx_phase $service_pic_enable $src_mac $dst_mac`
+@@ -168,7 +168,7 @@
+       numcpus=3
+     ;;
+     esac
+-
++    numcpus=${NUMCPUS:-$numcpus}
+     arg_str=${arg_str}`/home/pfe/riot/get_virtio_argstr $numcpus $numports $lo_num $fab_enable $pfe_id $vmx_phase $service_pic_enable $src_mac $dst_mac`
+     is_vmware=`lspci|grep VMXNET3`
+     if [ -n "$is_vmware" ]; then
 @@ -200,7 +217,7 @@
  
  # Get the taskset mask

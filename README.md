@@ -510,8 +510,12 @@ The actual amount in MB is Hugepagesize x HugePages_Free / 1024. In the example 
 ### Distribute vmxt process on different cores
 
 Prior to 17.4, the launch script tries to randomize the cpu core assigned to the process vmxt (J-KERN). 
-Starting with 17.4, the process makes use of a configuration file in /etc/vmxt/init.conf to control the cpus used.
+You can limit the number of cores via the env variable NUMCPUS. The number of worker cores used by riot 
+will be NUMCPUS-3. 
+
+With 17.4, the process makes use of a configuration file in /etc/vmxt/init.conf to control the cpus used.
 This file can be provided via the env variable VMXT at launch, pointing to a file that will be used if present.
+This file doesn't seem to be used by 18.1 and newer versions.
 
 ```
 $ cat vmxt.conf

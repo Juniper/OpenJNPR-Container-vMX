@@ -124,6 +124,7 @@ export YANG_SCHEMA YANG_DEVIATION YANG_ACTION YANG_PACKAGE
 if [ -f /u/$VMXT ]; then
   echo Copying $VMXT to /etc/vmxt/init.conf
   cp /u/$VMXT /etc/vmxt/init.conf
+  cp /u/$VMXT /etc/riot/init.conf
 fi
 
 echo "Starting PFE ..."
