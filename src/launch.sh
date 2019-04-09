@@ -6,6 +6,7 @@ echo "Juniper Networks vMX Docker Light Container"
 
 VCPMEM="${VCPMEM:-1024}"  # default memory for VCP: 1024MB
 VCPU="${VCPU:-1}"         # default # of cpus for VCP: 1
+WAITFOR="${WAITFOR:-eth0}"
 
 set -e # exit immediately if something goes wrong
 /system_check.sh
@@ -46,8 +47,8 @@ if [ ! -f "/u/$LICENSE" ]; then
 fi
 echo "LICENSE=$LICENSE"
 
-until ip link show eth0; do
-  echo "waiting for eth0 to be attached ..."
+until ip link show $WAITFOR; do
+  echo "waiting for $WAITFOR to be attached ..."
   sleep 5
 done
 
