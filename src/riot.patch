@@ -52,3 +52,16 @@
      if [ "x$use_cfg" == "x1" ]; then
          vif_list=$(get_vif_list)
          # When interfaces are explicitly specified, do not skip any
+--- riot/nested_env.sh.orig	2019-07-12 07:36:03.538528693 +0200
++++ riot/nested_env.sh	2019-07-12 07:37:46.121906215 +0200
+@@ -118,10 +118,6 @@
+             if [[ "${devtype}" != "vif" && "${devtype}" != "veth" && "${devtype}" != "hv_netvsc" && "${force_pcap}" != "1" ]]; then
+                 continue
+             fi
+-            if [ ${skipped_intf} -lt ${num_skip_intf} ]; then
+-                skipped_intf=$(($skipped_intf + 1))
+-                continue
+-            fi
+ 
+             # make sure the device is marked as 'UP', mtu set to 9001
+             ip link set dev ${vif} up mtu ${mtu}

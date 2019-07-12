@@ -16,9 +16,11 @@ services:
     environment:
       - ID=vmx1
       - LICENSE=license-eval.txt
-      - IMAGE=junos-vmx-x86-64-18.4R1.8.qcow2
+        #      - IMAGE=junos-vmx-x86-64-19.1R1.6.qcow2
+      - IMAGE=junos-vmx-x86-64-19.2R1.1.qcow2
       - PUBLICKEY=id_rsa.pub
       - CONFIG=vmx1.conf
+        #      - WAITFOR=eth4
       - NUMCPUS=4
 #      - HDDIMAGE=/images/p1.qcow2 # if we want it to be persistant
     volumes:
