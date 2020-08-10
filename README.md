@@ -2,13 +2,13 @@
 
 [![](https://images.microbadger.com/badges/version/juniper/openjnpr-container-vmx:bionic.svg)](https://microbadger.com/images/juniper/openjnpr-container-vmx:bionic "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/juniper/openjnpr-container-vmx:bionic.svg)](https://microbadger.com/images/juniper/openjnpr-container-vmx:bionic "Get your own image badge on microbadger.com") use with Juniper vMX 18.2 and newer
 
-[![](https://images.microbadger.com/badges/version/juniper/openjnpr-container-vmx:trusty.svg)](https://microbadger.com/images/juniper/openjnpr-container-vmx:trusty "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/juniper/openjnpr-container-vmx:trusty.svg)](https://microbadger.com/images/juniper/openjnpr-container-vmx:trusty "Get your own image badge on microbadger.com") use with Juniper vMX 18.1 and older
+[![](https://images.microbadger.com/badges/version/juniper/openjnpr-container-vmx:trusty.svg)](https://microbadger.com/images/juniper/openjnpr-container-vmx:trusty "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/juniper/openjnpr-container-vmx:trusty.svg)](https://microbadger.com/images/juniper/openjnpr-container-vmx:trusty "Get your own image badge on microbadger.com") use with Juniper vMX 17.4 up to 18.1
+
+For 17.3 and older, please use [tag pre17.4](https://github.com/Juniper/OpenJNPR-Container-vMX/releases/tag/pre17.4).
 
 https://hub.docker.com/r/juniper/openjnpr-container-vmx/
 
-New: vMX 18.4 works as well
-
-Docker container to launch Junos vMX 17.3 and newer versions on baremetal compute nodes. While the Junos control plane (VCP) runs on top of Qemu-kvm, the forwarding plane (VFP/RIOT) runs natively in the container:
+Docker container to launch Junos vMX 17.4 and newer versions on baremetal compute nodes. While the Junos control plane (VCP) runs on top of Qemu-kvm, the forwarding plane (VFP/RIOT) runs natively in the container:
 
 ```                                          
        +------------------------------+
@@ -50,7 +50,7 @@ Docker container to launch Junos vMX 17.3 and newer versions on baremetal comput
 - Memory hugepages provisioned (1GB per vMX)
 - [Docker](https://www.docker.com/get-docker) 17.03 or newer (e.g. ubuntu package docker.io)
 - [docker-compose](https://docs.docker.com/compose/) (e.g. ubuntu package docker-compose)
-- junos-vmx-x86-64-17.3R1.10.qcow2 image, extracted from the vmx-bundle-*tgz file available at https://www.juniper.net/support/downloads/?p=vmx or as an eval download from https://www.juniper.net/us/en/dm/free-vmx-trial/ (registration required)
+- junos-vmx-x86-64-17.4R1.16.qcow2 image, extracted from the vmx-bundle-*tgz file available at https://www.juniper.net/support/downloads/?p=vmx or as an eval download from https://www.juniper.net/us/en/dm/free-vmx-trial/ (registration required)
 
 ## Getting Started
 
