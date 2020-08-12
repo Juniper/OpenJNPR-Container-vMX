@@ -3,9 +3,46 @@
 # All rights reserved.
 #
 
-echo 1 > /var/jnx/docker
+#echo 1 > /var/jnx/docker
 
 PFE_SRC=/usr/share/pfe
+ukern_init_file="/etc/vmxt/init"
+mv /etc/riot/riot_init.conf /etc/riot/init.conf
+mv /etc/vmxt/vmxt_init.conf /etc/vmxt/init.conf
+
+
+# "$ukern_init_file contains default value of ukern core to use
+# change that to user supplied core value."
+write_vmxt_init()
+{
+  local ukern_cpu
+  local non_ukern_cpu
+  ukern_cpu=$1
+  non_ukern_cpu=$1
+  ukern_cpu=$(echo "obase=10;2^$ukern_cpu" | bc)
+  non_ukern_cpu=$(echo "obase=10;2^$non_ukern_cpu" | bc)
+
+  if grep -qe "^ukern_cpu" $ukern_init_file${fpc_name}.conf; then
+        sed -i "s/^ukern_cpu=.*/ukern_cpu=\"${ukern_cpu}\"/" $ukern_init_file${fpc_name}.conf
+    else
+        echo "ukern_cpu=\"${ukern_cpu}\"" >> $ukern_init_file${fpc_name}.conf
+    fi
+    if grep -qe "^non_ukern_cpu" $ukern_init_file${fpc_name}.conf; then
+        sed -i "s/^non_ukern_cpu=.*/non_ukern_cpu=\"$non_ukern_cpu\"/" $ukern_init_file${fpc_name}.conf
+    else
+        echo "non_ukern_cpu=\"$non_ukern_cpu\"" >> $ukern_init_file${fpc_name}.conf
+    fi
+    if [ "x$ukern_cpu" == "x$non_ukern_cpu" ];then
+        if grep -qe "^lazy_alloc" $ukern_init_file${fpc_name}.conf; then
+            sed -i "s/^lazy_alloc=.*/lazy_alloc=\"1\"/" $ukern_init_file${fpc_name}.conf
+        else
+            echo "lazy_alloc=\"1\"" >> $ukern_init_file${fpc_name}.conf
+        fi
+    else
+        sed -i "s/^lazy_alloc//" $ukern_init_file${fpc_name}.conf
+    fi
+}
+
 
 # Start broadcasting Gratuitous ARP and ping
 #  required to keep VCP arp table up-to-date
@@ -21,16 +58,6 @@ done
 end=$(date +"%s")
 echo "Done [$(($end - $start))s]"
 
-if [ ! -f /etc/vmxt/init.conf ]; then
-  cores=$(cat /proc/self/status |grep Cpus_allowed_list|awk '{print $2}')
-  if [ -z "${cores##*,*}" ]; then
-    IFS=', ' read -r -a array <<< "$cores" 
-    vmxtcore=${array[$RANDOM % ${#array[@]} ]}
-  else
-    vmxtcore=$(shuf -i $cores -n 1)
-  fi
-fi
-
 # create eDB with interface description taken from docker
 /create_ephemeral_db.sh > /tmp/vfp0.cli
 if [ -s /tmp/vfp0.cli ]; then
@@ -38,16 +65,8 @@ if [ -s /tmp/vfp0.cli ]; then
   rsh 128.0.0.1 "cli < /tmp/vfp0.cli"
 fi
 
-echo "patching start_vmxt.sh ..."
-rcp 128.0.0.1:/usr/share/pfe/start_vmxt.sh .
-rsh 128.0.0.1 mv /usr/share/pfe/start_vmxt.sh /usr/share/pfe/start_vmxt.sh.orig
-if [ ! -f /etc/vmxt/init.conf ]; then
-  echo "use cpu $vmxtcore for Junos"
-  sed -i "s/C 2/C $vmxtcore -L/" start_vmxt.sh
-fi
-#mkdir /etc/vmxt
-#echo "ukern_cpu \"$vmxtcore\"" > /etc/vmxt/init.conf
-rcp start_vmxt.sh 128.0.0.1:/usr/share/pfe/
+vmxtcore="${VMXT_CORE:-2}"
+write_vmxt_init $vmxtcore
 
 # patch riot to allow macvlan interfaces too
 echo "patching riot.tgz ..."
@@ -56,8 +75,6 @@ cd /tmp
 rcp 128.0.0.1:/usr/share/pfe/riot_lnx.tgz .
 tar zxf riot_lnx.tgz
 patch -Np0 < /riot.patch
-patch -Np0 < /riot_start.patch
-patch -Np0 < /device_list.sh.patch
 
 echo "patching done. Uploading riot_lnx.tgz to VCP ..."
 tar zcf riot_lnx.tgz riot

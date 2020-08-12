@@ -13,6 +13,8 @@ set -e # exit immediately if something goes wrong
 
 echo "/u contains the following files:"
 ls /u
+mv /etc/riot/riot_init.conf /etc/riot/init.conf
+mv /etc/vmxt/vmxt_init.conf /etc/vmxt/init.conf
 
 # fix network interface order due to https://github.com/docker/compose/issues/4645
 /fix_network_order.sh

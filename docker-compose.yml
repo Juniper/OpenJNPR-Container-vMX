@@ -17,11 +17,14 @@ services:
       - ID=vmx1
       - LICENSE=license-eval.txt
         #      - IMAGE=junos-vmx-x86-64-19.1R1.6.qcow2
-      - IMAGE=junos-vmx-x86-64-19.2R1.1.qcow2
+      - IMAGE=junos-vmx-x86-64-20.2R1-S1.4.qcow2
       - PUBLICKEY=id_rsa.pub
       - CONFIG=vmx1.conf
         #      - WAITFOR=eth4
-      - NUMCPUS=4
+      - IO_CORE=2
+      - WORKER_CORE=3
+      - MASTER_CORE=4
+      - VMXT_CORE=5
 #      - HDDIMAGE=/images/p1.qcow2 # if we want it to be persistant
     volumes:
       - $PWD/images:/images
@@ -44,9 +47,13 @@ services:
     environment:
       - ID=vmx2
       - LICENSE=license-eval.txt
-      - IMAGE=junos-vmx-x86-64-18.1R1.9.qcow2
+      - IMAGE=junos-vmx-x86-64-17.4B1.1.qcow2
       - PUBLICKEY=id_rsa.pub
       - CONFIG=vmx2.conf
+      - IO_CORE=6
+      - WORKER_CORE=7
+      - MASTER_CORE=8
+      - VMXT_CORE=9
     volumes:
       - $PWD:/u:ro
       - /var/run/docker.sock:/var/run/docker.sock
