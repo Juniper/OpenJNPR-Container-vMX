@@ -1,67 +1,18 @@
---- riot/nested_env.sh.orig	2017-06-28 10:43:25.000000000 +0200
-+++ riot/nested_env.sh	2017-06-28 10:50:53.000000000 +0200
-@@ -70,7 +70,7 @@
-     # Look for virtual network devices
-     # Build a list of network interfaces available and skip those
-     # we know we don't want to use
--    local vif_list=$(\ls -1 /sys/class/net/ | grep -v "br\|ext\|^int\|lo\|sit\|tap\|eth0")
-+    local vif_list=$(\ls -1 /sys/class/net/ | grep -v "br\|ext\|^int\|lo\|sit\|tap\|ip6\|eth0\|em1\|fxp0"|sort -th -k2 -n)
-     skipped_intf=0
- 
-     # In case we are using config file to generate pcap intf list.   
-@@ -83,15 +83,6 @@
-     for vif in ${vif_list}
-     do
-         devtype=$(ethtool -i ${vif} | grep driver | cut -d' ' -f2)
--        # Further filter the list by skipping devices that are not
--        # controlled by 'vif' or 'veth' driver
--        if [[ "${devtype}" != "vif" && "${devtype}" != "veth" ]]; then
--            continue
--        fi
--        if [ ${skipped_intf} -lt ${num_skip_intf} ]; then
--            skipped_intf=$(($skipped_intf + 1))
--            continue
--        fi
-         # make sure the device is marked as 'UP', mtu set to 9001
-         ip link set dev ${vif} up mtu 9001
-         # turn off ipv6 for this interface on linux
-@@ -99,15 +99,6 @@
-     for vif in ${vif_list}
-     do
-         devtype=$(ethtool -i ${vif} | grep driver | cut -d' ' -f2)
--        # Further filter the list by skipping devices that are not
--        # controlled by 'vif' or 'veth' driver
--        if [[ "${devtype}" != "vif" && "${devtype}" != "veth" && "${devtype}" != "hv_netvsc" && "${force_pcap}" != "1" ]]; then
--            continue
--        fi
--        if [ ${skipped_intf} -lt ${num_skip_intf} ]; then
--            skipped_intf=$(($skipped_intf + 1))
--            continue
--        fi
-         # make sure the device is marked as 'UP', mtu set to 9001
-         ip link set dev ${vif} up mtu 9001
-         # turn off ipv6 for this interface on linux
---- riot/nested_env.sh.orig    2018-12-01 00:56:07.000000000 +0100
-+++ riot/nested_env.sh    2018-12-28 18:07:18.176374452 +0100
-@@ -91,7 +91,7 @@
+--- riot/dpdk/dpdk_setup.sh.orig
++++ riot/dpdk/dpdk_setup.sh
+@@ -17,15 +17,6 @@ create_mnt_huge()
+         fi
+ }
 
-     # In case we are using config file to generate pcap intf list.
-     # we will prepare vif_list in config order.
--    force_pcap=0
-+    force_pcap=1
-     if [ "x$use_cfg" == "x1" ]; then
-         vif_list=$(get_vif_list)
-         # When interfaces are explicitly specified, do not skip any
---- riot/nested_env.sh.orig	2019-07-12 07:36:03.538528693 +0200
-+++ riot/nested_env.sh	2019-07-12 07:37:46.121906215 +0200
-@@ -118,10 +118,6 @@
-             if [[ "${devtype}" != "vif" && "${devtype}" != "veth" && "${devtype}" != "hv_netvsc" && "${force_pcap}" != "1" ]]; then
-                 continue
-             fi
--            if [ ${skipped_intf} -lt ${num_skip_intf} ]; then
--                skipped_intf=$(($skipped_intf + 1))
--                continue
--            fi
- 
-             # make sure the device is marked as 'UP', mtu set to 9001
-             ip link set dev ${vif} up mtu ${mtu}
+-if [ "${docker}" == "yes" ]
+-then
+-    echo "Setting Up DPDK for Docker env"
+-    # Hugepages should be setup on the host
+-    #  We only set the mount point here
+-    create_mnt_huge
+-    # nothing else to be done for Docker
+-    exit
+-fi
+
+ trace "SETTING UP DPDK ENVIRONMENT ON"
+ uname -a

@@ -5,7 +5,7 @@ FROM ubuntu:18.04
 
 RUN export DEBIAN_FRONTEND=noninteractive \
     && dpkg --add-architecture i386 \
-    && apt-get update && apt-get install -y -q qemu-kvm qemu-utils dosfstools pwgen \
+    && apt-get update && apt-get install -y -q qemu-kvm qemu-utils dosfstools pwgen bc \
         openssh-client bridge-utils ethtool bsdmainutils wget ca-certificates patch \
         netbase rsh-client psmisc libpcap0.8 iputils-arping tcpdump macchanger \
         util-linux libc6:i386 libncurses5:i386 libstdc++6:i386 gettext-base \
@@ -19,9 +19,12 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && mkdir -p /var/pfe /var/riot /var/jnx /var/tmp/vmx /var/tmp/gcov \
     && touch /etc/riot/runtime.conf
 
-COPY riot.patch riot_start.patch create_config_drive.sh launch.sh \
+COPY riot.patch create_config_drive.sh launch.sh \
   create_apply_group.sh create_ephemeral_db.sh \
-  device_list.sh.patch system_check.sh start_pfe.sh fix_network_order.sh /
+  system_check.sh start_pfe.sh fix_network_order.sh /
+
+COPY riot_init.conf /etc/riot/
+COPY vmxt_init.conf /etc/vmxt/
 
 RUN chmod a+rx /*.sh
 
