@@ -4,6 +4,8 @@
 
 [![](https://images.microbadger.com/badges/version/juniper/openjnpr-container-vmx:trusty.svg)](https://microbadger.com/images/juniper/openjnpr-container-vmx:trusty "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/juniper/openjnpr-container-vmx:trusty.svg)](https://microbadger.com/images/juniper/openjnpr-container-vmx:trusty "Get your own image badge on microbadger.com") use with Juniper vMX 17.4 up to 18.1
 
+Jan 2021: Verfied to launch vMX 20.4R1.12
+
 For 17.3 and older, please use [tag pre17.4](https://github.com/Juniper/OpenJNPR-Container-vMX/releases/tag/pre17.4).
 
 https://hub.docker.com/r/juniper/openjnpr-container-vmx/
@@ -198,9 +200,9 @@ If all went well, you should see 2 running containers via 'docker ps':
 
 ```
 $ docker ps
-CONTAINER ID        IMAGE                                   COMMAND             CREATED             STATUS              PORTS                                           NAMES
-cdbb818b9afc        juniper/openjnpr-container-vmx:bionic   "/launch.sh"        35 seconds ago      Up 33 seconds       0.0.0.0:32913->22/tcp, 0.0.0.0:32912->830/tcp   openjnprcontainervmx_vmx1_1
-749f148658d2        juniper/openjnpr-container-vmx:trusty   "/launch.sh"        35 seconds ago      Up 31 seconds       0.0.0.0:32915->22/tcp, 0.0.0.0:32914->830/tcp   openjnprcontainervmx_vmx2_1
+CONTAINER ID        IMAGE                                   COMMAND                 CREATED             STATUS              PORTS                                                                         NAMES
+5feb4ed28608        juniper/openjnpr-container-vmx:trusty   "/launch.sh"            6 minutes ago       Up 6 minutes        0.0.0.0:32786->22/tcp, 0.0.0.0:32784->830/tcp                                 openjnpr-container-vmx_vmx2_1
+1ff00bcc723d        juniper/openjnpr-container-vmx:bionic   "/launch.sh"            6 minutes ago       Up 6 minutes        0.0.0.0:32789->22/tcp, 0.0.0.0:32788->830/tcp                                 openjnpr-container-vmx_vmx1_1
 ```
 
 If nothing is shown, then the containers likely terminated in error. Their logs are still available and provide details. The container names can be seen via 'docker ps -a' (show also terminated containers). Use 'docker logs <container>' to get more info's. the log shown here is from a healthy container:
@@ -324,8 +326,47 @@ vMX openjnprcontainervmx_vmx2_1 (172.21.0.3) 18.1R1.9 eihaekahpeetungeekeerohr 	
 ```
 
 This takes typically less than 5 minutes.
-
 Ready means the vMX is up and running and the forwarding engine is operational with interfaces attached. See section 'Troubleshooting' if it doesn't get ready.
+
+A successful tail of docker log output will show port status changed to up:
+
+```
+. . .
+
+RPIO: Accepted connection from localhost <-> localhost:3000
+RPIO: Accepted connection from localhost <-> localhost:3000
+RIOT: Received bandwidth config: b/w : 125000
+
+RIOT: Initializing policer for bank 0, bucket : 0 rate: 125000
+
+METER: Low level srTCM config: 
+	CIR period = 12863, CIR bytes per period = 1
+RIOT: New policer index: 0
+
+RPIO: FIPS:handle_command:RIOT/RPIO received FIPS command 
+
+riot_fips_ossl_kats_handler: FIPS:Filled Results:FIPS Self-tests for TDES-CBC Encrypt:PASSED
+FIPS Self-tests for TDES-CBC Decrypt:PASSED
+FIPS Self-tests for AES-CBC Encrypt:PASSED
+FIPS Self-tests for AES-CBC Decrypt:PASSED
+FIPS Self-tests for AES-GCM Encrypt:PASSED
+FIPS Self-tests for AES-GCM Decrypt:PASSED
+FIPS Self-tests for SHA-1:PASSED
+FIPS Self-tests for HMAC-SHA-1:PASSED
+FIPS Self-tests for SHA-2-256:PASSED
+FIPS Self-tests for HMAC-SHA-2-256:PASSED
+FIPS Self-tests for RSA Encrypt/Decrypt:PASSED
+FIPS Self-tests for RSA Sign/Verify:PASSED
+ 
+RPIO: FIPS:handle_command:RIOT/RPIO received FIPS command 
+
+HOSTIF: Accepted connectionRUNTIME: Detected port 0 status changed to UP
+
+RUNTIME: Detected port 1 status changed to UP
+
+RUNTIME: Detected port 2 status changed to UP
+```
+
 
 ### log into the vMX
 
