@@ -4,7 +4,8 @@
 
 [![](https://images.microbadger.com/badges/version/juniper/openjnpr-container-vmx:trusty.svg)](https://microbadger.com/images/juniper/openjnpr-container-vmx:trusty "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/juniper/openjnpr-container-vmx:trusty.svg)](https://microbadger.com/images/juniper/openjnpr-container-vmx:trusty "Get your own image badge on microbadger.com") use with Juniper vMX 17.4 up to 18.1
 
-Jan 2021: Verfied to launch vMX 20.4R1.12
+- Apr 2021: Verfied to launch vMX 21.1R1.11
+- Jan 2021: Verfied to launch vMX 20.4R1.12
 
 For 17.3 and older, please use [tag pre17.4](https://github.com/Juniper/OpenJNPR-Container-vMX/releases/tag/pre17.4).
 

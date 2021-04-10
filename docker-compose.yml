@@ -16,7 +16,7 @@ services:
     environment:
       - ID=vmx1
       - LICENSE=license-eval.txt
-      - IMAGE=junos-vmx-x86-64-20.4R1.12.qcow2
+      - IMAGE=junos-vmx-x86-64-21.1R1.11.qcow2
       - PUBLICKEY=id_rsa.pub
       - CONFIG=vmx1.conf
         #      - WAITFOR=eth4
