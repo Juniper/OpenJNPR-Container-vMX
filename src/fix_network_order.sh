@@ -57,22 +57,6 @@ write_core_mapping()
     fi
 }
 
-write_intf_core_mapping()
-{
-    # parse interfaces.
-    fpc_intf_type="af_packet"
-    ix_port=$1
-    intf=$2
-    io_cpu="1"
-    line_num="2"
-    line_num=$(expr $line_num + $(cat  ${core_mapping_file}.cfg |grep ix_port | wc -l))
-    if grep -qe "^$intf" ${core_mapping_file}.cfg; then
-        sed -i "s/^$intf.*/$intf    ix_port=${ix_port}      rx_cpu=${io_cpu}        tx_cpu=${io_cpu}        $fpc_intf_type/" ${core_mapping_file}.cfg
-    else
-        sed -i "${line_num}i$intf      ix_port=${ix_port}      rx_cpu=${io_cpu}        tx_cpu=${io_cpu}        $fpc_intf_type" ${core_mapping_file}.cfg
-    fi
-}
-
 echo "$0: trying to fix network interface order via docker inspect myself ..."
 
 # get ordered list of MAC addresses, but skip the first empty one 
@@ -85,7 +69,6 @@ write_core_mapping $master_core $io_core $worker_core
 
 echo "MACS=$MACS"
 index=0
-ix_port=0
 for mac in $MACS; do
   FROM=$(ip link | grep -B1 $mac | head -1 | awk '{print $2}'|cut -d@ -f1)
   TO="eth$index"
@@ -111,12 +94,6 @@ for mac in $MACS; do
     fi
     ethtool --offload $FROM tx off
     ethtool --offload $TO tx off
-  fi
-  ret=$(\ls -1 /sys/class/net/ | grep -v "br\|ext\|^int\|lo\|sit\|tap\|eth0\|fxp0\|em1" | egrep -i $TO | wc -l)
-  # Insert nterface in core_mapping.cf file
-  if [ "x$ret" == "x1" ]; then
-     write_intf_core_mapping $ix_port $TO $io_core
-     ix_port=$(($ix_port + 1))
   fi
   index=$(($index + 1))
 done
