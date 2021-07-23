@@ -22,7 +22,7 @@ write_intf_core_mapping()
 }
 
 core_mapping_file="/usr/share/pfe/core_mapping"
-io_core="${IO_CORE:-1}"
+io_core="1"
 
 ix_port=0
 for intf in $(ls /sys/class/net | grep 'eth[1-9][0-9]*'); do
