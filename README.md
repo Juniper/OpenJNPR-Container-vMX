@@ -97,6 +97,11 @@ If the junos version is 18.2R1 or newer, make sure to use the container image ju
 
 If left unchanged, the compoe file expects junos-vmx-x86-64-18.2R1.9.qcow2 and junos-vmx-x86-64-18.1R1.9.qcow2 to be present in the current directory.
 
+### riot worker cores
+
+If many instances are launched, its recommended to distribute the cpu worker cores used by riot by setting WORKER_CORE to different
+core numbers. The value given is the cpu number (not count).
+
 ### Enable hugepages
 
 Define at least 1024 x 2MB hugepages or 2 x 1GB hugepages via kernel options by adding 
@@ -130,6 +135,8 @@ HugePages_Rsvd:        0
 HugePages_Surp:        0
 Hugepagesize:    1048576 kB
 ```
+
+Note: hugepages are no longer required. riot is launched with --no-huge 
 
 ### ssh public/private keypair
 
