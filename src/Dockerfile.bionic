@@ -21,7 +21,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 COPY riot.patch create_config_drive.sh launch.sh \
   create_apply_group.sh create_ephemeral_db.sh \
-  system_check.sh start_pfe.sh fix_network_order.sh /
+  system_check.sh start_pfe.sh fix_network_order.sh update_core_mapping.sh /
 
 COPY riot_init.conf /etc/riot/
 COPY vmxt_init.conf /etc/vmxt/

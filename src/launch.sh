@@ -54,6 +54,8 @@ until ip link show $WAITFOR; do
   sleep 5
 done
 
+/update_core_mapping.sh
+
 rootpassword=$(pwgen 24 1)
 hostname=$(docker ps --format '{{.Names}}' -f id=$HOSTNAME)
 hostname="${hostname:-$HOSTNAME}"
