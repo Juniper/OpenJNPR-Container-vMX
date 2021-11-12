@@ -44,7 +44,7 @@ else
 fi
 
 echo -n "Check for container privileged mode ...... "
-echo "hello" 2>/dev/null > /sys/fs/cgroup/aaa
+mkdir /sys/fs/cgroup/aaa 2> /dev/null
 if [ $? -eq 0 ]; then
   echo yes
 else
